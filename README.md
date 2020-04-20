@@ -10,4 +10,4 @@ npm run build
 
 ## Testing
 
-Access *index.html* in *out* to see some testing stuff.
+Access *index.html* in *test* to see some testing stuff.
