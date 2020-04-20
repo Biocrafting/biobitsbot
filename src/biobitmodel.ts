@@ -11,8 +11,10 @@ class BioBitModel {
     addUser(id: string): string {
         let mes: string = '';
 
-        if ( !this.users.find((u: User )=> u.id == id))
-            this.users.push(new User(id));
+        if ( !this.users.find((u: User )=> u.getName() == id)) {
+            const baseUser: UserData = {id: id, bitCount: 0, modifier: []};
+            this.users.push(new User(baseUser));
+        }
         else {
             mes = 'User already exits!';
             console.warn(mes);
@@ -22,10 +24,16 @@ class BioBitModel {
     }
 
     start() {
-        this.intervalId = setInterval(calculate, this.interval * 1000, this.users, this.interval);
+        if (!this.intervalId)
+            this.intervalId = setInterval(calculate, this.interval * 1000, this.users, this.interval);
     }
-}
+    stop() {
+        clearInterval(this.intervalId);
 
+        this.interval = 0;
+    }
+
+}
 
 function calculate(users: Array<User>, interval: number) {
     users.map((user) => {
@@ -34,39 +42,43 @@ function calculate(users: Array<User>, interval: number) {
 }
 
 //
+interface UserData {
+    id: string;
+    bitCount: number;
+    modifier: Array<any>
+}
 
 class User {
-    id: string;
-
-    bitCount: number = 0;
+    data: UserData;
     readonly baseGainPerMinute: number = 100;
 
-    modifier:          Array<any> = [];
-
-    constructor(id: string) {
-        this.id = id;
+    constructor(data: UserData) {
+        this.data = data;
     }
 
     getCount(): number {
-        return this.bitCount;
+        return this.data.bitCount;
     }
     
     setCount(value: number) {
-        this.bitCount = value            
+        this.data.bitCount = value            
     }
 
     getName(): string {
-        return this.id;
+        return this.data.id;
+    }
+
+    getId(): string {
+        return this.data.id;
     }
 
     getGain() {
-        let multiplier = this.modifier.length > 0 ? this.modifier.reduce((acc, cur) => acc.value * cur) : 1;
+        let multiplier = this.data.modifier.length > 0 ? this.data.modifier.reduce((acc, cur) => acc.getValue() * cur) : 1;
         return this.baseGainPerMinute * multiplier;
     }
 
     calcGain(interval: number) {
         const newGain = this.getGain() * (interval / 60)
-        this.setCount(this.bitCount + newGain);
+        this.setCount(this.data.bitCount + newGain);
     }
-
 }
