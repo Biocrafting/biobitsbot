@@ -34,6 +34,12 @@ body>div {
 
 .error {
     color: rgb(156, 0, 0);
+    opacity: 1;
+    transition: opacity .2s;
+}
+
+.invisible {
+    opacity: 0;
 }
 
 
@@ -46,4 +52,52 @@ body>div {
 #users p {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+#saveStateArea {
+    position: absolute;
+
+    top: 5px;
+    right: 5px;
+}
+
+.saveload {
+    font-family: 'Mukta', sans-serif;
+    font-size: 20px;
+
+    padding: 5px;
+    margin: 2px;
+
+    border: 3px solid rgb(94, 94, 94);
+    border-radius: 4px;
+
+    cursor: pointer;
+    user-select: none;
+
+    background-color: rgb(228, 228, 228);
+
+    transition: filter .1s, transform .1s;
+
+}
+
+#saveStateArea>div:hover {
+    filter: brightness(95%);
+}
+#saveStateArea>div:active {
+    filter: brightness(90%);
+    transform: translateY(.5px);
+}
+
+#runState {
+    text-align: center;
+    font-size: 2em !important;
+    font-weight: bold;
+    padding: 0px !important;
+}
+
+#runState::after {
+    content: '▶️';
+}
+#runState.run::after {
+    content: '⏸️';
 }
