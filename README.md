@@ -7,3 +7,7 @@ git pull https://github.com/Biocrafting/biobitsbot
 npm install
 npm run build
 ```
+
+## Testing
+
+Access index.html in out to see some testing stuff.
