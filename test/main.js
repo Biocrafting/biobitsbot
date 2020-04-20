@@ -41,8 +41,16 @@ function websiteRefresher() {
             userNode.querySelector('.name').innerText  = user.getName();
             userNode.querySelector('.count').innerText = user.getCount().toFixed(2);
             userNode.querySelector('.gain').innerText  = user.getGain();
-            
         }
+
+        const runState = model.getState();
+
+        if(runState) {
+            document.getElementById('runState').classList.add('run')
+        } else {
+            document.getElementById('runState').classList.remove('run')
+        }
+
     }
 }
 
@@ -58,11 +66,70 @@ function addNewUser() {
         err = 'Username cannot be empty.'
     }
 
-    document.getElementById('newUserErr').innerText = err;
+    if (err === '') {
+        document.getElementById('newUserErr').classList.add('invisible');
+
+    } else {
+        document.getElementById('newUserErr').classList.remove('invisible');
+        document.getElementById('newUserErr').innerText = err;
+    }
 }
 
+window.addEventListener('load', () => {
+    document.getElementById('newUserName').addEventListener('keyup', (e) => {
+
+        if (e.key === 'Enter') {
+            const parent = e.target.parentNode;
+            console.log(e);
+            parent.querySelector('button').click();
+        }
+    })
+
+    document.getElementById('saveButton').addEventListener('click', (e) => {
+        const save = model.save();
+        console.log(save)
+        downloadFile(save, 'biobitssave.json', 'json')
+    });
+
+    document.getElementById('loadButton').addEventListener('click', (e) => {
+        loadFile()
+          .then((text) => {
+                model.load(text);
+          });
+    });
+
+    document.getElementById('runState').addEventListener('click', (e) => {
+        model.toggle();
+    });
+});
 // 
 
 function saveData() {
 
+}
+
+function loadFile() {
+    return new Promise((resolve, reject) => {
+        let i = document.createElement('input');
+        i.type = 'file';
+        i.accept = 'text/json';
+        i.multiple = false;
+        i.addEventListener('change', () => {
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => { 
+                resolve(e.target.result)
+            });
+            reader.readAsText(i.files[0]);
+        })
+        i.click();
+    })
+}
+
+
+function downloadFile(text, name, type) {
+    let a = document.createElement('a');
+    let file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+    a.click();
 }

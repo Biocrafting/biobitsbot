@@ -3,41 +3,50 @@
     <head>
         <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300&display=swap" rel="stylesheet"> 
         <link href="style.css" rel="stylesheet"> 
-        
+
         <script src="../out/biobitmodel.js"></script>
         <script src="../out/main.js"></script>
         <script src="main.js"></script>
     </head>
     <body>
-        <div id="users">
+        <div id="mainContainer">
+            <div id="users">
+                <div id="template">
 
+                    <p>
+                        Name: <span class="name"></span>
+                    </p>
+                    <p>
+                        BioBits: <span class="count"></span>
+                    </p>
+                    <p>
+                        Gain/Min: <span class="gain"></span>
+                    </p>
+                </div>
 
-            <div id="template">
-                <div></div>
-                <div></div>
-
-                <p>
-                    Name: <span class="name"></span>
-                </p>
-                <p>
-                    BioBits: <span class="count"></span>
-                </p>
-                <p>
-                    Gain/Min: <span class="gain"></span>
-                </p>
             </div>
 
-        </div>
+            <div id="newUser">
+                <div>
+                    <p>Create new User:</p>
+                    <input id="newUserName" placeholder="username">
+                    <button onclick="addNewUser()">Create</button>
+                    <p id="newUserErr" class="error invisible"></p>
+                </div>
+            </div>
 
-        <div id="newUser">
-            <div>
-                <p>Create new User:</p>
-                <input id="newUserName" placeholder="username">
-                <button onclick="addNewUser()">Create</button>
-                <p id="newUserErr" class="error"></p>
+            <div id="saveStateArea">
+                <div id="saveButton" class="saveload">
+                    Save State
+                    
+                </div>            
+                <div id="loadButton" class="saveload">
+                    Load State
+                </div>
+                <div id="runState">
+                </div>
             </div>
         </div>
-
     </body>
 
 
