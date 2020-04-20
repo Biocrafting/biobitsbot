@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node ./node_modules/typescript/bin/tsc --build src/tsconfig.json"
+    "build": "node ./node_modules/typescript/bin/tsc --build src/tsconfig.json",
+    "watch": "node ./node_modules/typescript/bin/tsc --build src/tsconfig.json --watch"
   },
   "author": "",
   "license": "MIT",
