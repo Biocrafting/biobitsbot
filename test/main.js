@@ -63,7 +63,7 @@ function addNewUser() {
     if (name) {
         err = model.addUser(name);
     } else {
-        err = 'Username cannot be empty.'
+        err = 'Name cannot be empty!'
     }
 
     if (err === '') {
@@ -73,6 +73,13 @@ function addNewUser() {
         document.getElementById('newUserErr').classList.remove('invisible');
         document.getElementById('newUserErr').innerText = err;
     }
+}
+
+function deleteUser(ele) {
+    const userId = ele.parentNode.id;
+    model.deleteUser(userId);
+
+    ele.parentNode.remove();
 }
 
 window.addEventListener('load', () => {

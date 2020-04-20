@@ -27,11 +27,19 @@ class BioBitModel {
             this.users.push(new User(baseUser));
         }
         else {
-            mes = 'User already exits!';
+            mes = 'A user with that name already exits!';
             console.warn(mes);
         }
 
         return mes;
+    }
+
+    deleteUser(id: string) {
+        this.users = this.users.filter((user) => user.getId() !== id);
+
+        if(this.users.length <= 0) {
+            this.stop();
+        }
     }
 
 

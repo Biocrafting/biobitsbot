@@ -11,8 +11,10 @@
     <body>
         <div id="mainContainer">
             <div id="users">
-                <div id="template">
-
+                <div id="template" class="baseUser">
+                    <div class="deleteUser divButton" onclick="deleteUser(this)">
+                        <span>X</span>
+                    </div>
                     <p>
                         Name: <span class="name"></span>
                     </p>
@@ -29,21 +31,21 @@
             <div id="newUser">
                 <div>
                     <p>Create new User:</p>
-                    <input id="newUserName" placeholder="username">
+                    <input id="newUserName" placeholder="name">
                     <button onclick="addNewUser()">Create</button>
                     <p id="newUserErr" class="error invisible"></p>
                 </div>
             </div>
 
             <div id="saveStateArea">
-                <div id="saveButton" class="saveload">
+                <div id="saveButton" class="saveload divButton">
                     Save State
                     
                 </div>            
-                <div id="loadButton" class="saveload">
+                <div id="loadButton" class="saveload divButton">
                     Load State
                 </div>
-                <div id="runState">
+                <div id="runState" class="divButton">
                 </div>
             </div>
         </div>
