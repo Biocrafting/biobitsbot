@@ -1,17 +1,14 @@
-interface UserData {
-    id: string;
-    bitCount: number;
-    modifier: Array<any>
-}
-
-interface SaveState {
-    interval: number;
-    userData: Array<UserData>;
-}
+const modifierModel = new ModifierModel();
+modifierModel.addModifier({
+    id: 1,
+    name: 'TestModifier',
+    baseValue: 50,
+    scaling: 1,
+})
 
 class BioBitModel {
-    interval:      number = 0.1;
-    intervalId:    number = -1;
+    private interval:      number = 0.1;
+    private intervalId:    number = -1;
 
     users:          Array<User> = [];
     
@@ -41,7 +38,6 @@ class BioBitModel {
             this.stop();
         }
     }
-
 
     start() {
         if (this.intervalId < 0)
@@ -94,7 +90,7 @@ class BioBitModel {
 
 function calculate(users: Array<User>, interval: number) {
     users.map((user) => {
-        user.calcGain(interval);
+        user.update(interval);
     })
 }
 
@@ -103,7 +99,8 @@ function calculate(users: Array<User>, interval: number) {
 
 class User {
     data: UserData;
-    readonly baseGainPerMinute: number = 100;
+
+    private readonly baseGainPerMinute: number = 100;
 
     constructor(data: UserData) {
         this.data = data;
@@ -125,12 +122,33 @@ class User {
         return this.data.id;
     }
 
+    addModifier(id: number, count: number = 1) {
+        const mod = this.data.modifier.find((mod) => mod.id === id);
+        if(!mod) {
+
+            if(modifierModel.getModifier(id)) {
+                this.data.modifier.push({id: id, count: count})
+            } else {
+                console.warn(`No modifier with id ${id} in database found!`);
+            }
+        } else {
+            mod.count += count;
+        }
+    }
+
+    getModifierValue(data: ModifierUserData): number {
+        const modifierData: BaseModifier = modifierModel.getModifier(data.id);
+        const value: number = modifierData.getValue(data.count);
+
+        return value;
+    }
+
     getGain() {
-        let multiplier = this.data.modifier.length > 0 ? this.data.modifier.reduce((acc, cur) => acc.getValue() * cur) : 1;
+        let multiplier = this.data.modifier.length > 0 ? this.data.modifier.reduce((acc, cur) => acc * this.getModifierValue(cur), 1) : 1;
         return this.baseGainPerMinute * multiplier;
     }
 
-    calcGain(interval: number) {
+    update(interval: number) {
         const newGain = this.getGain() * (interval / 60)
         this.setCount(this.data.bitCount + newGain);
     }
